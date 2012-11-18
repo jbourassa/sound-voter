@@ -3,40 +3,10 @@
 <head>
   <title>Sound Voter</title>
   <script src="recorder.js" charset="utf-8"></script>
+  <script src="js/voter.js" charset="utf-8"></script>
 </head>
 
   <body>
     <a href="#" style="font-size:12em;">aaaa</a>
-    <script type="text/javascript" charset="utf-8">
-      n = navigator;
-      function onSuccess(stream) {
-        var context = new webkitAudioContext();
-        var mediaStreamSource = context.createMediaStreamSource(stream);
-        var rec = new Recorder(mediaStreamSource);
-        rec.record();
-
-        intervalKey = setInterval(function() {
-          rec.exportWAV(function(blob) {
-            blob = blob.slice(44);
-            reader = new FileReader();
-            reader.onloadend = function() {
-              var arr = new Int16Array(this.result)
-              debugger;
-            }
-            reader.readAsArrayBuffer(blob)
-            rec.clear();
-          });
-        }, 1000);
-      }
-
-      function onError(e) {
-        console.log('nope :(');
-      }
-
-      document.querySelector('a').addEventListener('click', function() {
-        navigator.webkitGetUserMedia({ audio: true }, onSuccess, onError);
-      });
-
-    </script>
   </body>
 </html>
