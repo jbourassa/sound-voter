@@ -11,6 +11,10 @@ function onSuccess(stream) {
       reader.onloadend = function() {
         var arr = to_mono(new Int16Array(this.result));
         var res = rms(arr);
+        // @TODO : A-weighting filter. Ressources : 
+        // - algorithm : https://gist.github.com/148112
+        // - convolve : re-implement from numpy in js
+        //              http://docs.scipy.org/doc/numpy/reference/generated/numpy.convolve.html
         console.log(Math.log(res));
       }
       reader.readAsArrayBuffer(blob)
