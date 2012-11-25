@@ -1,69 +1,113 @@
+var context, source;
 function onSuccess(stream) {
-  var context = new webkitAudioContext();
-  var mediaStreamSource = context.createMediaStreamSource(stream);
-  var rec = new Recorder(mediaStreamSource, { workerPath: '/js/recorderWorker.js'});
-  rec.record();
+  context = new webkitAudioContext();
+  source = context.createMediaStreamSource(stream);
 
-  intervalKey = setInterval(function() {
-    rec.getBuffer(function(buffers) {
-      var sample = Sample.from_stereo(buffers[0], buffers[1]);
-      console.log(sample.rms().toFixed(2));
-      rec.clear();
-    });
-  }, 1000);
-}
+  var vote = new Vote({
+    notify : function(n) {
+      console.log('Notify : ' + n.toFixed(2));
+    },
+    end : function(n) {
+      console.log('End : ' + n.toFixed(2));
+    },
+  });
+  vote.run();
+
+};
 
 
 function onError(e) {
-  console.log('nope :(');
-}
+  console.error("Can't access audio :(");
+  console.error(e);
+};
 
-document.addEventListener("DOMContentLoaded", function(){
+navigator.webkitGetUserMedia({ audio: true }, onSuccess, onError);
 
+function Vote(opts) {
+  if(!opts) opts = {};
+  var d = Vote.default_opts;
+  this.opts = {};
+  this.opts.delay = opts.delay || d.delay;
+  this.opts.interval = opts.interval || d.interval;
+  this.opts.notify = opts.notify || d.notify;
+  this.opts.end = opts.end || d.end;
 
+  this._next_start = 0;
+  this._rec = null;
+  this._interval_id = null;
+};
 
-  document.querySelector('a').addEventListener('click', function() {
-    navigator.webkitGetUserMedia({ audio: true }, onSuccess, onError);
-  });
-}, false );
+Vote.default_opts = {
+  delay: 10000,
+  interval: 1000,
+  notify: function() {},
+  end: function() {},
+};
 
+Vote.prototype = {
+  run: function() {
+    this._rec = new Recorder(source, { workerPath: '/js/recorderWorker.js'});
+    this._rec.record();
+    this._interval_id = setInterval(this._report.bind(this), this.opts.interval);
+    setTimeout(this._end.bind(this), this.opts.delay);
+  },
 
+  _report: function() {
+    this._rec.getBuffer(function(buffers) {
+      var sample = Sample.from_stereo(buffers[0], buffers[1], this._next_start);
+      this._next_start = buffers[0].length - 1;
+      this.opts.notify(sample.rms());
+    }.bind(this));
+  },
 
+  _end: function() {
+    clearInterval(this._interval_id);
+    this._rec.getBuffer(function(buffers) {
+      this._rec.clear();
+      var sample = Sample.from_stereo(buffers[0], buffers[1]);
+      this.opts.end(sample.rms());
+    }.bind(this));
+  },
+};
 
-function Sample(buffer) {
+function Sample(buffer, t0) {
   this._buffer = buffer;
   this._mean = null;
   this._sd_squared = null;
   this._sum = null;
-}
+  this._t0 = (t0) ? t0 : 0;
+};
 
-Sample.from_stereo = function(left, right) {
+Sample.from_stereo = function(left, right, t0) {
   var size = left.length,
       combined = new Float32Array(size);
   for(var i = 0; i < size; i++) {
     combined.set([left[i] / 2 + right[i] / 2], i );
   }
-  return new Sample(combined);
-}
+  return new Sample(combined, t0);
+};
 
 Sample.prototype = {
   rms: function() {
-    return Math.sqrt(Math.pow(this.mean(), 2) + this.sd_squared());
+    // 500: fun factor
+    return Math.sqrt(Math.pow(this.mean(), 2) + this.sd_squared()) * 500;
   },
 
   mean: function() {
     if(this._mean === null) {
-      this._mean = this.sum() / this._buffer.length;
+      this._mean = this.sum() / (this._buffer.length - this._t0);
     }
     return this._mean;
   },
 
   sd_squared: function() {
     if(this._sd_squared === null) {
-      var mean = this.mean();
-      for(var i = 0; i < this._buffer.length; i++) {
-        this._sd_squared += Math.pow(this._buffer[i] - mean, 2);
+      var mean = this.mean(),
+        tmp_sum = 0;
+      for(var i = this._t0; i < this._buffer.length; i++) {
+        tmp_sum += Math.pow(this._buffer[i] - mean, 2);
       }
+      this._sd_squared = tmp_sum / (this._buffer.length - this._t0 - 1);
     }
 
     return this._sd_squared;
@@ -72,7 +116,7 @@ Sample.prototype = {
   sum: function() {
     if(this._sum === null) {
       this._sum = 0;
-      for(var i = 0; i < this._buffer.length; i++) {
+      for(var i = this._t0; i < this._buffer.length; i++) {
         this._sum += this._buffer[i];
       }
     }
