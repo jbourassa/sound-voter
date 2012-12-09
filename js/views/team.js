@@ -10,6 +10,7 @@ define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/te
       
       initialize: function() {
         _.bindAll(this);
+        this.model.on('change', this.render);
       },
       
       render: function() {
