@@ -4,7 +4,7 @@ requirejs.config({
     bootstrap: '//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min',
     underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min',
     backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min',
-    flot: '//cdnjs.cloudflare.com/ajax/libs/flot/0.7/jquery.flot.min'
+    highcharts: '//code.highcharts.com/highcharts'
   },
   shim: {
     underscore: {
@@ -18,12 +18,12 @@ requirejs.config({
       deps: ['underscore', 'jquery']
     },
     bootstrap: ['jquery'],
-    flot: ['jquery'],
+    highcharts: [],
   }
 });
 
-require(['jquery', 'underscore', 'backbone', 'bootstrap', 'flot', 'voter'],
-  function($, _, Backbone, Bootstrap, Flot, Voter) {
+require(['jquery', 'underscore', 'backbone', 'bootstrap', 'highcharts', 'voter'],
+  function($, _, Backbone, Bootstrap, HighCharts, Voter) {
     window.voter = new Voter();
     
     Backbone.history.start({
