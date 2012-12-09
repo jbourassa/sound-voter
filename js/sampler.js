@@ -1,9 +1,8 @@
-
 function Sampler(opts) {
   if(!opts) opts = {};
   var d = Sampler.default_opts;
   this.opts = {};
-  this.opts.delay = opts.delay || d.delay;
+  this.opts.duration = opts.duration || d.duration;
   this.opts.interval = opts.interval || d.interval;
   this.opts.notify = opts.notify || d.notify;
   this.opts.end = opts.end || d.end;
@@ -14,18 +13,18 @@ function Sampler(opts) {
 };
 
 Sampler.default_opts = {
-  delay: 10000,
+  duration: 10000,
   interval: 1000,
   notify: function() {},
   end: function() {},
 };
 
 Sampler.prototype = {
-  run: function() {
+  run: function(source) {
     this._rec = new Recorder(source, { workerPath: '/js/vendor/recorderWorker.js' });
     this._rec.record();
+    setTimeout(this._end.bind(this), this.opts.duration);
     this._interval_id = setInterval(this._report.bind(this), this.opts.interval);
-    setTimeout(this._end.bind(this), this.opts.delay);
   },
 
   _report: function() {
