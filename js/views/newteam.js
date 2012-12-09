@@ -2,15 +2,14 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/newteam.html'],
   function($, Backbone, _, templateText) {
     
     var NewTeam = Backbone.View.extend({
-      tagName: 'form',
+      tagName: 'div',
       initialize: function() {
         _.bindAll(this);      
       },
       
       render: function() {
         var html = this.template();
-        $(this.el).html(html);
-        console.log('là');
+        this.$el.html(html);
         return this.$el;
       },
       
