@@ -1,27 +1,3 @@
-var context, source;
-function onSuccess(stream) {
-  context = new webkitAudioContext();
-  source = context.createMediaStreamSource(stream);
-
-  var vote = new Sampler({
-    notify : function(n) {
-      console.log('Notify : ' + n.toFixed(2));
-    },
-    end : function(n) {
-      console.log('End : ' + n.toFixed(2));
-    },
-  });
-  vote.run();
-
-};
-
-
-function onError(e) {
-  console.error("Can't access audio :(");
-  console.error(e);
-};
-
-navigator.webkitGetUserMedia({ audio: true }, onSuccess, onError);
 
 function Sampler(opts) {
   if(!opts) opts = {};

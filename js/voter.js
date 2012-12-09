@@ -7,7 +7,8 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/team.html'],
       },
       
       initialize: function() {
-        this.navigate();
+        _.bindAll(this);
+        this.authorize();
       },
       
       index: function() {
@@ -24,9 +25,24 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/team.html'],
             
             newTeam.on('team:added', teamList.teamAdded);
           });
+      },
+
+      authorize: function() {
+        navigator.webkitGetUserMedia({ audio: true }, this.mediaSuccess, this.mediaError);
+      },
+      
+      mediaSuccess: function(stream) {
+        var context = new webkitAudioContext();
+        this.source = context.createMediaStreamSource(stream);
+        this.navigate();
+      },
+
+      mediaError: function(e) {
+        alert('Not supported on your shitty browser.');
+        console.error(e);
       }
-    });    
+    });
     
-    return Voter;    
+    return Voter;
   });
 
