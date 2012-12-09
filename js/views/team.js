@@ -4,7 +4,7 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
       tagName: 'li',
       
       initialize: function() {
-        _.bindAll(this);      
+        _.bindAll(this);
       },
       
       render: function() {
