@@ -3,7 +3,7 @@ function onSuccess(stream) {
   context = new webkitAudioContext();
   source = context.createMediaStreamSource(stream);
 
-  var vote = new Vote({
+  var vote = new Sampler({
     notify : function(n) {
       console.log('Notify : ' + n.toFixed(2));
     },
@@ -23,9 +23,9 @@ function onError(e) {
 
 navigator.webkitGetUserMedia({ audio: true }, onSuccess, onError);
 
-function Vote(opts) {
+function Sampler(opts) {
   if(!opts) opts = {};
-  var d = Vote.default_opts;
+  var d = Sampler.default_opts;
   this.opts = {};
   this.opts.delay = opts.delay || d.delay;
   this.opts.interval = opts.interval || d.interval;
@@ -37,14 +37,14 @@ function Vote(opts) {
   this._interval_id = null;
 };
 
-Vote.default_opts = {
+Sampler.default_opts = {
   delay: 10000,
   interval: 1000,
   notify: function() {},
   end: function() {},
 };
 
-Vote.prototype = {
+Sampler.prototype = {
   run: function() {
     this._rec = new Recorder(source, { workerPath: '/js/vendor/recorderWorker.js' });
     this._rec.record();
