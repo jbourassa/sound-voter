@@ -9,12 +9,12 @@ requirejs.config({
     underscore: {
       exports: '_'
     },
-    jquery: {
+    zepto: {
       exports: '$'
     },
     backbone: {
       exports: 'Backbone',
-      deps: ['underscore', 'jquery']
+      deps: ['underscore', 'zepto']
     }
   }
 });
