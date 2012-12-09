@@ -1,4 +1,4 @@
-define(['zepto', 'backbone', 'underscore', 'views/team'],
+define(['jquery', 'backbone', 'underscore', 'views/team'],
   function($, Backbone, _, Team) {
   
     var TeamList = Backbone.View.extend({

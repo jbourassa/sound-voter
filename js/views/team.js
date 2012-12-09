@@ -1,7 +1,11 @@
-define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
-  function($, Backbone, _, templateText) {
-    var TeamView = Backbone.View.extend({
+define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/team.html'],
+  function($, Backbone, _, Feedback, templateText) {
+    var Team = Backbone.View.extend({
       tagName: 'li',
+      
+      events: {
+        'click .start-record': 'startRecord'
+      },
       
       initialize: function() {
         _.bindAll(this);
@@ -13,9 +17,17 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
         return this.$el;
       },
       
+      startRecord: function() {
+        var feedback = new Feedback({
+          model: this.model
+        });
+        
+        feedback.render();
+      },      
+      
       template: _.template(templateText)
     });
     
-    return TeamView;
+    return Team;
 });
 

@@ -1,4 +1,4 @@
-define(['zepto', 'backbone', 'underscore', 'models/team', 'text!templates/newteam.html'],
+define(['jquery', 'backbone', 'underscore', 'models/team', 'text!templates/newteam.html'],
   function($, Backbone, _, Team, templateText) {
     
     var NewTeam = Backbone.View.extend({

@@ -1,4 +1,4 @@
-define(['zepto', 'backbone', 'underscore'],
+define(['jquery', 'backbone', 'underscore'],
   function($, Backbone, _) {
     var Team = Backbone.Model.extend({
       defaults: {

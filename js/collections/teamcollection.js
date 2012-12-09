@@ -1,4 +1,4 @@
-define(['zepto', 'backbone', 'underscore', 'models/team'],
+define(['jquery', 'backbone', 'underscore', 'models/team'],
   function($, Backbone, _, Team) {
     var TeamCollection = Backbone.Collection.extend({
       model: Team
