@@ -1,4 +1,4 @@
-define(['jquery', 'backbone', 'underscore', 'text!templates/team.html'],
+define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
   function($, Backbone, _, templateText) {
     var Voter = Backbone.Router.extend({
       routes: {
