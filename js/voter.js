@@ -11,12 +11,15 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
       },
       
       index: function() {
-        require(['views/newteam', 'models/team'], function(NewTeam, Team) {
-          var newTeam = new NewTeam({
-            //model: new Team()
+        require(['views/teamlist', 'views/newteam'],
+          function(TeamList, NewTeam) {
+            var teamList = new TeamList();
+            
+            var newTeam = new NewTeam();
+            newTeam.render().appendTo('body');
+            
+            newTeam.on('team:added', teamList.teamAdded);
           });
-          newTeam.render().appendTo('body');
-        });
       }
     });    
     
