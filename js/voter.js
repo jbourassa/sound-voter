@@ -1,5 +1,6 @@
 define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
-  function($, Backbone, _, templateText) {
+  function($, Backbone, _, templateText) {    
+    console.log($, Backbone, _, templateText);
     var Voter = Backbone.Router.extend({
       routes: {
         '': 'index'
