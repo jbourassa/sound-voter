@@ -18,6 +18,8 @@ define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/te
       },
       
       startRecord: function() {
+        this.model.set('state', 'running');
+        
         var feedback = new Feedback({
           model: this.model
         });

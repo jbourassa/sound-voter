@@ -8,9 +8,8 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
       },
       
       render: function() {
-        var html = this.template();
+        var html = this.template(this.model.attributes);
         this.$el.html(html);
-        console.log(this.el);
         return $(this.$el.html()).modal();
       },
       
