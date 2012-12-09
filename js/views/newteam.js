@@ -1,7 +1,8 @@
-define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
+define(['jquery', 'backbone', 'underscore', 'text!templates/newteam.html'],
   function($, Backbone, _, templateText) {
-    var TeamView = Backbone.Model.extend({
-      tagName: 'div',
+    
+    var NewTeam = Backbone.Model.extend({
+      tagName: 'form',
       initialize: function() {
         _.bindAll(this);      
       },
@@ -14,6 +15,6 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
       template: _.template(templateText)
     });
     
-    return TeamView;
+    return NewTeam;
 });
 
