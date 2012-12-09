@@ -23,7 +23,12 @@ define(['jquery', 'backbone', 'underscore', 'views/team'],
           model: team
         });
         
+        teamView.on('team:destroyed', this.destroy);
         teamView.render(team.attributes).appendTo(this.el);
+      },
+
+      destroy: function(model) {
+        this.collection.remove(model);
       }
     });
     

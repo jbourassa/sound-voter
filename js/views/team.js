@@ -2,9 +2,10 @@ define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/te
   function($, Backbone, _, Feedback, templateText) {
     var Team = Backbone.View.extend({
       tagName: 'li',
-      
+
       events: {
-        'click .start-record': 'startRecord'
+        'click .start-record': 'startRecord',
+        'click .delete' : 'destroy'
       },
       
       initialize: function() {
@@ -25,8 +26,13 @@ define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/te
         });
         
         feedback.render();
-      },      
+      },
       
+      destroy: function() {
+        this.trigger('team:destroyed', this.model);
+        this.remove();
+      },
+
       template: _.template(templateText)
     });
     
