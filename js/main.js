@@ -21,4 +21,7 @@ requirejs.config({
 
 require(['zepto', 'underscore', 'backbone', 'voter'], function($, _, Backbone, Voter) {
   window.voter = new Voter;
+  Backbone.history.start({
+    pushState: true
+  });
 });

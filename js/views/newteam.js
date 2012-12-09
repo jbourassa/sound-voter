@@ -1,7 +1,7 @@
 define(['zepto', 'backbone', 'underscore', 'text!templates/newteam.html'],
   function($, Backbone, _, templateText) {
     
-    var NewTeam = Backbone.Model.extend({
+    var NewTeam = Backbone.View.extend({
       tagName: 'form',
       initialize: function() {
         _.bindAll(this);      
@@ -10,7 +10,9 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/newteam.html'],
       render: function() {
         var html = this.template();
         $(this.el).html(html);
-      }
+        console.log('là');
+        return this.$el;
+      },
       
       template: _.template(templateText)
     });
