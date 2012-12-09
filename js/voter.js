@@ -11,9 +11,13 @@ define(['zepto', 'backbone', 'underscore', 'text!templates/team.html'],
       },
       
       index: function() {
-        require(['views/teamlist', 'views/newteam'],
-          function(TeamList, NewTeam) {
-            var teamList = new TeamList();
+        require(['views/teamlist', 'views/newteam',
+                 'collections/teamcollection'],
+          function(TeamList, NewTeam, TeamCollection) {
+            var teamList = new TeamList({
+              collection: new TeamCollection()
+            });
+            teamList.render().appendTo('body');
             
             var newTeam = new NewTeam();
             newTeam.render().appendTo('body');

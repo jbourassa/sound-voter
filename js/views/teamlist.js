@@ -1,12 +1,13 @@
-define(['zepto', 'backbone', 'underscore'],
-  function($, Backbone, _) {
+define(['zepto', 'backbone', 'underscore', 'views/team'],
+  function($, Backbone, _, Team) {
   
-    var TeamList = Backbone.Model.extend({
+    var TeamList = Backbone.View.extend({
       
       tagName: 'ul',
       
       initialize: function() {
-        _.bindAll(this);      
+        _.bindAll(this);
+        this.collection.on('add', this.insertTeam);
       },
       
       render: function() {
@@ -14,9 +15,16 @@ define(['zepto', 'backbone', 'underscore'],
       },
       
       teamAdded: function(team) {
-        console.log(team.attributes);
-      }
+        this.collection.add(team);
+      },
       
+      insertTeam: function(team) {
+        var teamView = new Team({
+          model: team
+        });
+        
+        teamView.render(team.attributes).appendTo(this.el);
+      }
     });
     
     return TeamList;
