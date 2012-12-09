@@ -4,19 +4,50 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
       tagName: 'div',
       className: 'modal hide',
       
+      interval: 1000,
+
+      duration: 5000,
+
       initialize: function() {
         _.bindAll(this);
+        this.current = 0;
       },
       
       render: function() {
         var html = this.template(this.model.attributes);
         this.$el.html(html);
         this.$el.modal();
+        this.initChart();
+        this.initRecorder();
         
+        return this.$el;
+      },
+      
+      template: _.template(templateText),
+
+      notify: function(y) {
+        this.chart.series[0].addPoint([(this.current++ * this.interval) / 1000, y], true, false);
+      },
+
+      finished: function() {
+      },
+
+      initRecorder: function() {
+        this.sampler = new Sampler({
+          notify: this.notify,
+          end: this.finished,
+          duration: this.duration,
+          interval: this.interval
+        });
+
+        this.sampler.run(window.voter.source);
+      },
+
+      initChart: function() {
         this.chart = new Highcharts.Chart({
           chart: {
             renderTo: this.$el.find('.chart')[0],
-            type: 'area',
+            type: 'line',
             marginRight: 10
           },
           title: {
@@ -25,7 +56,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
           xAxis: {
             type: 'linear',
             min: 0,
-            max: 10,
+            max: this.duration / 1000,
             tickPixelInterval: 150
           },
           yAxis: {
@@ -49,11 +80,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
             data: []
           }]
         });
-        
-        return this.$el;
-      },
-      
-      template: _.template(templateText)
+      }
     });
     
     return Feedback;
