@@ -1,2 +1,13 @@
 <span class="name"><%= name %></span>
-
+<% if(state == 'new') { %>
+  <a class="start-record btn btn-primary">
+    <i class="icon-volume-down icon-white"></i> Shout!
+  </a>
+  <a class="delete btn btn-danger btn-mini">
+    <i class="icon-remove icon-white"></i> Remove
+  </a>
+<% } else if(state == 'running') { %>
+  TODO
+<% } else if(state == 'done') { %>
+  <span class="score"><%= score %></span>
+<% } %>
