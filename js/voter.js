@@ -46,7 +46,7 @@ Vote.default_opts = {
 
 Vote.prototype = {
   run: function() {
-    this._rec = new Recorder(source, { workerPath: '/js/recorderWorker.js'});
+    this._rec = new Recorder(source, { workerPath: '/js/vendor/recorderWorker.js' });
     this._rec.record();
     this._interval_id = setInterval(this._report.bind(this), this.opts.interval);
     setTimeout(this._end.bind(this), this.opts.delay);
