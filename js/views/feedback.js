@@ -32,8 +32,15 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
         $.fx.off = false;
       },
 
-      finished: function() {
-        // @TODO : finish it up.
+      finished: function(score) {
+        this.model.set({
+          score: score,
+          state: 'done'
+        });
+        this.chart.setTitle({
+          text: this.model.get('name') + ' - ' + Math.round(score)
+        });
+        this.chart.redraw();
       },
 
       initRecorder: function() {
@@ -54,7 +61,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
             type: 'line',
             marginRight: 10
           },
-          title: { text: '@TODO nom' },
+          title: { text: this.model.get('name') },
           xAxis: {
             type: 'linear',
             min: 0,

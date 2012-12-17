@@ -1,4 +1,4 @@
-<span class="name"><%= name %></span>
+<h2><%= name %></h2>
 <% if(state == 'new') { %>
   <a class="start-record btn btn-primary">
     <i class="icon-volume-down icon-white"></i> Shout!
@@ -7,5 +7,5 @@
     <i class="icon-remove icon-white"></i> Remove
   </a>
 <% } else if(state == 'done') { %>
-  <span class="score"><%= score %></span>
+  Score : <span class="score"><%= Math.round(score) %></span>
 <% } %>
