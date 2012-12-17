@@ -18,10 +18,10 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/team.html'],
             var teamList = new TeamList({
               collection: new TeamCollection()
             });
-            teamList.render().appendTo('body');
+            teamList.render().appendTo('.container');
             
             var newTeam = new NewTeam();
-            newTeam.render().appendTo('body');
+            newTeam.render().appendTo('.container');
             
             newTeam.on('team:added', teamList.teamAdded);
           });
