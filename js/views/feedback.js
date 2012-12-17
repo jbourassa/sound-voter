@@ -4,7 +4,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
       tagName: 'div',
       className: 'modal hide',
       
-      interval: 1000,
+      interval: 250,
 
       duration: 5000,
 
@@ -26,10 +26,13 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
       template: _.template(templateText),
 
       notify: function(y) {
+        $.fx.off = true;
         this.chart.series[0].addPoint([(this.current++ * this.interval) / 1000, y], true, false);
+        $.fx.off = false;
       },
 
       finished: function() {
+        // @TODO : finish it up.
       },
 
       initRecorder: function() {
@@ -50,16 +53,18 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
             type: 'line',
             marginRight: 10
           },
-          title: {
-            text: '@TODO nom'
-          },
+          title: { text: '@TODO nom' },
           xAxis: {
             type: 'linear',
             min: 0,
-            max: this.duration / 1000,
-            tickPixelInterval: 150
+            max: (this.duration / this.interval - 2) * this.interval / 1000,
+            tickPixelInterval: 150,
+            labels: false,
+            lineWidth: 0,
+            tickWidth: 0
           },
           yAxis: {
+            min: 0,
             title: {
               text: 'Noise'
             },
@@ -69,16 +74,13 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
               color: '#808080'
             }]
           },
-          legend: {
-            enabled: false
-          },
-          exporting: {
-            enabled: false
-          },
+          legend: { enabled: false },
+          exporting: { enabled: false },
           credits: false,
-          series: [{
-            data: []
-          }]
+          plotOptions: {
+            series: { animation: false }
+          },
+          series: [{ data: [] }]
         });
       }
     });
