@@ -17,6 +17,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
         var html = this.template(this.model.attributes);
         this.$el.html(html);
         this.$el.modal();
+        this.$el.find('.modal-body').focus();
         this.initChart();
         this.initRecorder();
         
