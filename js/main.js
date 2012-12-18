@@ -5,8 +5,8 @@ requirejs.config({
     underscore: '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min',
     backbone: '//cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min',
     highcharts: '//code.highcharts.com/highcharts',
-    recorder: '/js/vendor/recorder',
-    sampler: '/js/sampler'
+    recorder: 'vendor/recorder',
+    sampler: 'sampler'
   },
   shim: {
     underscore: {
