@@ -28,6 +28,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
 
       notify: function(y) {
         $.fx.off = true;
+        y = parseFloat(y.toFixed(2));
         this.chart.series[0].addPoint([(this.current++ * this.interval) / 1000, y], true, false);
         $.fx.off = false;
       },
@@ -38,7 +39,7 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
           state: 'done'
         });
         this.chart.setTitle({
-          text: this.model.get('name') + ' - ' + Math.round(score)
+          text: this.model.get('name') + ' - <strong>' + score.toFixed(2) + '</strong>'
         });
         this.chart.redraw();
       },
@@ -61,7 +62,14 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
             type: 'line',
             marginRight: 10
           },
-          title: { text: this.model.get('name') },
+          title: {
+            text: this.model.get('name'),
+            margin: 24,
+            style: {
+              fontSize: '26px',
+              margin: '10px 0'
+            }
+          },
           xAxis: {
             type: 'linear',
             min: 0,
@@ -74,19 +82,20 @@ define(['jquery', 'backbone', 'underscore', 'text!templates/feedback.html'],
           yAxis: {
             min: 0,
             title: {
-              text: 'Noise'
-            },
-            plotLines: [{
-              value: 0,
-              width: 1,
-              color: '#808080'
-            }]
+              text: 'Noise',
+              style: {
+                fontSize: '16px'
+              }
+            }
           },
           legend: { enabled: false },
           exporting: { enabled: false },
           credits: false,
           plotOptions: {
-            series: { animation: false }
+            series: {
+              lineWidth: 4,
+              color: '#3D03ED'
+            }
           },
           series: [{ data: [] }]
         });

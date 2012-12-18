@@ -1,11 +1,12 @@
 <h2><%= name %></h2>
-<% if(state == 'new') { %>
-  <a class="start-record btn btn-primary">
-    <i class="icon-volume-down icon-white"></i> Shout!
-  </a>
-  <a class="delete btn btn-danger btn-mini">
-    <i class="icon-remove icon-white"></i> Remove
-  </a>
-<% } else if(state == 'done') { %>
-  Score : <span class="score"><%= Math.round(score) %></span>
-<% } %>
+<p class="lead">
+  <% if(state == 'new') { %>
+    No score yet.
+    <a class="start-record small btn btn-primary">
+      <i class="icon-volume-down icon-white"></i> Start shouting !
+    </a>
+    <a class="delete muted small" href="#"><small>✗ Remove</small></a>
+  <% } else if(state == 'done') { %>
+    Score : <strong><%= score.toFixed(2) %></strong>
+  <% } %>
+</p>

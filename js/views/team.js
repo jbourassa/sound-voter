@@ -29,7 +29,8 @@ define(['jquery', 'backbone', 'underscore', 'views/feedback', 'text!templates/te
         feedback.render();
       },
       
-      destroy: function() {
+      destroy: function(e) {
+        e.preventDefault();
         this.trigger('team:destroyed', this.model);
         this.remove();
       },

@@ -4,6 +4,7 @@ define(['jquery', 'backbone', 'underscore', 'views/team'],
     var TeamList = Backbone.View.extend({
       
       tagName: 'ul',
+      className: 'unstyled team-list',
       
       initialize: function() {
         _.bindAll(this);
